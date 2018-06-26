@@ -1,31 +1,58 @@
 <!DOCTYPE html>
 <html lang='en' dir='ltr'>
-  <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <meta http-equiv='X-UA-Compatible'>
-    <link rel='stylesheet' type='text/css' href='./styles/styles.css'>
-    <title>Palette Picker</title>
-  </head>
-  <body>
-    <main class='app-container'>
-      <div class='top-container'>
-        <section class='generate-container'>
-          <form class='generate-palette'>
-            <button type='submit'>Generate Palette</button>
-          </form>
-          <form class='save-palette'>
-            <input id='palette-name new-palette' type='text' />
-            <select id='select-project new-palette' name='Projects'>
-              <option value='project-one'>Project One</option>
-              <option value='project-two'>Project Two</option>
-            </select>
-            <button id='submit-new-palette new-palette' type='submit'>Save Palette</button>
-          </form>
-        </section>
-        <section class='palette-container'></section>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'>
+  <link rel='stylesheet' type='text/css' href='./styles/styles.css'>
+  <title>Palette Picker</title>
+</head>
+
+<body>
+  <main class='app-container'>
+    <div class='top-container'>
+      <section class='generate-container'>
+        <form class='generate-palette'>
+          <button type='submit'>Generate Palette</button>
+        </form>
+        <form class='save-palette'>
+          <input class='palette-name new-palette' type='text' />
+          <select class='select-project new-palette' name='Projects'>
+            <option value='project-one'>Project One</option>
+            <option value='project-two'>Project Two</option>
+          </select>
+          <button class='submit-new-palette new-palette' type='submit'>Save Palette</button>
+        </form>
+      </section>
+      <section class='palette-container'>
+        <div class='palette-color'>
+          <p>#FFF</p>
+        </div>
+        <div class='palette-color'>
+          <p>#FFF</p>
+        </div>
+        <div class='palette-color'>
+          <p>#FFF</p>
+        </div>
+        <div class='palette-color'>
+          <p>#FFF</p>
+        </div>
+        <div class='palette-color'>
+          <p>#FFF</p>
+        </div>
+      </section>
+    </div>
+    <section class='projects-container'>
+      <div class='project-form-container'>
+        <h3>Create a project</h3>
+      <form class='create-project-form'>
+        <input class='project-name' type='text' />
+        <button class='add-project' type='submit'>Submit</button>
       </div>
-      <section class='projects-container'></section>
-    </main>
-  </body>
+      </form>
+    </section>
+  </main>
+</body>
+
 </html>

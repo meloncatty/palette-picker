@@ -16,10 +16,11 @@
 .generate-palette {
   display: flex;
   flex-direction: column;
+  width: 78%;
 }
 
-.new-palette input, select, button {
-  margin-top: 20px;
+.new-palette {
+  margin-top: 30px;
 }
 
 .save-palette {
@@ -39,4 +40,23 @@
   width: 100vw;
   border: 1px solid #000;
   height: 300px;
+}
+
+.project-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.palette-color {
+  width: 100%;
+  height: 142px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.palette-color p {
+  margin-right: 10px;
 }
