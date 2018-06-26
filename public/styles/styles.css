@@ -1,0 +1,42 @@
+.top-container {
+  display: flex;
+  width: 100vw;
+}
+
+.generate-container {
+  width: 30%;
+  border: 1px solid #000;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.generate-palette {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-palette input, select, button {
+  margin-top: 20px;
+}
+
+.save-palette {
+  display: flex;
+  flex-direction: column;
+}
+
+.palette-container {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  border: 1px solid #000;
+  height: 600px;
+}
+
+.projects-container {
+  width: 100vw;
+  border: 1px solid #000;
+  height: 300px;
+}

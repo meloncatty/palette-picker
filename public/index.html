@@ -4,14 +4,28 @@
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-equiv='X-UA-Compatible'>
-    <link rel='stylesheet' type='text/css' src='../styles'>
+    <link rel='stylesheet' type='text/css' href='./styles/styles.css'>
     <title>Palette Picker</title>
   </head>
   <body>
-    <main>
-      <section id='generate-container'></section>
-      <section id='palette-container'></section>
-      <section id='projects-container'></section>
+    <main class='app-container'>
+      <div class='top-container'>
+        <section class='generate-container'>
+          <form class='generate-palette'>
+            <button type='submit'>Generate Palette</button>
+          </form>
+          <form class='save-palette'>
+            <input id='palette-name new-palette' type='text' />
+            <select id='select-project new-palette' name='Projects'>
+              <option value='project-one'>Project One</option>
+              <option value='project-two'>Project Two</option>
+            </select>
+            <button id='submit-new-palette new-palette' type='submit'>Save Palette</button>
+          </form>
+        </section>
+        <section class='palette-container'></section>
+      </div>
+      <section class='projects-container'></section>
     </main>
   </body>
 </html>
