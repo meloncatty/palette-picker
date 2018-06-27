@@ -40,8 +40,10 @@ function savePalette(e) {
   var projectName = document.querySelector('.select-project').value
   var newProject = document.querySelector('.display-projects-container')
   var projectContainer = document.createElement('div')
-  var createElPalette = document.createElement('p').innerText = paletteName
-  var createElProject = document.createElement('p').innerText = projectName
+  var createElPalette = document.createElement('p')
+  createElPalette.innerText = paletteName
+  var createElProject = document.createElement('p')
+  createElProject.innerText = projectName
   newProject.appendChild(projectContainer)
   var createMiniColors = colorList.map(color => {
     var miniColors = document.createElement('div')
@@ -49,8 +51,8 @@ function savePalette(e) {
     miniColors.className = 'mini-color'
     return miniColors
   })
-  console.log(createMiniColors)
-  newProject.innerHTML = createElProject + ' ' + createElPalette
+  newProject.appendChild(createElPalette)
+  newProject.appendChild(createElProject)
   for (var color of createMiniColors)
     newProject.appendChild(color)
 }
