@@ -13,7 +13,6 @@ function generateColors() {
   return colorList
 }
 
-
 generatePalette.addEventListener('click', assignColors)
 assignColors()
 
@@ -30,6 +29,31 @@ function assignColors(e) {
 }
 
 //endpoint to link proj + pal
+
+function savePalette(e) {
+
+  e.preventDefault()
+
+  var getColors = document.querySelectorAll('.palette-color')
+  var colorList = Array.from(getColors).map(color => color.innerText)
+  var paletteName = document.querySelector('.palette-name').value
+  var projectName = document.querySelector('.select-project').value
+  var newProject = document.querySelector('.display-projects-container')
+  var projectContainer = document.createElement('div')
+  var createElPalette = document.createElement('p').innerText = paletteName
+  var createElProject = document.createElement('p').innerText = projectName
+  newProject.appendChild(projectContainer)
+  var createMiniColors = colorList.map(color => {
+    var miniColors = document.createElement('div')
+    miniColors.style.background = color
+    miniColors.className = 'mini-color'
+    return miniColors
+  })
+  console.log(createMiniColors)
+  newProject.innerHTML = createElProject + ' ' + createElPalette
+  for (var color of createMiniColors)
+    newProject.appendChild(color)
+}
 
 paletteSubmit.addEventListener('click', savePalette)
 
