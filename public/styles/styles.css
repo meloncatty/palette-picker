@@ -1,44 +1,115 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
 .top-container {
   display: flex;
-  width: 100vw;
+  justify-content: center;
+  width: auto;
+  border: 2px solid #dedada;
+}
+
+button {
+  border: none;
+  background: #6200ee;
+  border-radius: 10px;
+  padding: 10px;
+  color: #dedada;
+  height: 39px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: .8em;
+}
+
+button:focus {
+  outline: none;
+}
+
+input {
+  border: 1px solid #91979b;
+  border-radius: 5px;
+  background: none;
+  height: 35px;
+  padding-left: 10px;
+}
+
+input:focus {
+  outline: none
+}
+
+select {
+  border: 1px solid #91979b;
+  border-radius: 5px;
+  background: none;
+  height: 39px;
+  width: 181px;
+  font-family: 'Tajawal', sans-serif;
 }
 
 .generate-container {
   width: 30%;
-  border: 1px solid #000;
   height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  border-right: 2px solid #dedada;
 }
 
 .generate-palette {
   display: flex;
   flex-direction: column;
-  width: 78%;
+  width: 173px;
+}
+
+.generate-palette-submit {
+  margin-top: 20px;
+}
+
+.generate-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.generate-form-container h1 {
+  padding-top: 20px;
 }
 
 .new-palette {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .save-palette {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.save-palette-form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit-new-palette{ 
+  margin-bottom: 30px;
 }
 
 .palette-container {
   display: flex;
   flex-direction: column;
   width: 70%;
-  border: 1px solid #000;
   height: 600px;
 }
 
 .projects-container {
-  width: 100vw;
-  border: 1px solid #000;
+  width: auto;
   height: 300px;
 }
 
@@ -51,7 +122,6 @@
 .palette-color {
   width: 100%;
   height: 142px;
-  border: 1px solid #000;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
