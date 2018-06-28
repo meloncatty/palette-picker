@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/meloncatty/palette-picker#readme",
   "dependencies": {
+    "css-normalize": "^0.0.1",
     "express": "^4.16.3",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.17.5",
+    "normalize-css": "^2.3.1"
   }
 }

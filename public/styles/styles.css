@@ -1,3 +1,5 @@
+
+
 body {
   margin: 0;
   padding: 0;
@@ -115,7 +117,10 @@ select {
 
 .projects-container {
   width: auto;
-  height: 300px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .project-form-container {
@@ -134,4 +139,34 @@ select {
 
 .palette-color p {
   margin-right: 10px;
+}
+
+.display-projects-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  margin-left: 90px;
+  width: 90%
+}
+
+.individual-project {
+  width: 30%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.individual-project h2 {
+  margin-left: 10px;
+}
+
+.mini-palette-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  margin-left: 10px;
+}
+
+.mini-color-container {
+  display: flex;
 }
