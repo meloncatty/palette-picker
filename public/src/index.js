@@ -1,5 +1,4 @@
 var generatePalette = document.querySelector('.generate-palette-submit')
-var colorContainers = document.querySelectorAll('.palette-color')
 var projectSubmit = document.querySelector('.add-project')
 var paletteSubmit = document.querySelector('.submit-new-palette')
 
@@ -14,19 +13,38 @@ function generateColors() {
   return colorList
 }
 
-generatePalette.addEventListener('click', assignColors)
-assignColors()
+generatePalette.addEventListener('click', createPalettes)
+createPalettes()
 
 //need case for no dupe colors
-function assignColors(e) {
+function createPalettes(e) {
 
   if (e) e.preventDefault()
-
-  colorContainers.forEach(container => {
+  
+  var colorContainers = document.querySelectorAll('.palette-color')
+  colorContainers.forEach((container, index) => {
     var bgColor = generateColors()
     container.style.background = 'rgb(' + bgColor[0] + ',' + bgColor[1] + ',' + bgColor[2] + ')'
     container.innerText = 'rgb(' + bgColor[0] + ',' + bgColor[1] + ',' + bgColor[2] + ')'
+    container.classList += ' palette-' + 0 + index
   })
+
+  var lockContainer00 = document.createElement('div')
+  lockContainer00.className = 'lock-container'
+  var lockContainer01 = document.createElement('div')
+  lockContainer01.className = 'lock-container'
+  var lockContainer02 = document.createElement('div')
+  lockContainer02.className = 'lock-container'
+  var lockContainer03 = document.createElement('div')
+  lockContainer03.className = 'lock-container'
+  var lockContainer04 = document.createElement('div')
+  lockContainer04.className = 'lock-container'
+
+  document.querySelector('.palette-00').appendChild(lockContainer00)
+  document.querySelector('.palette-01').appendChild(lockContainer01)
+  document.querySelector('.palette-02').appendChild(lockContainer02)
+  document.querySelector('.palette-03').appendChild(lockContainer03)
+  document.querySelector('.palette-04').appendChild(lockContainer04)
 }
 
 function createProjectInfo() {

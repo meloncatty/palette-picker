@@ -113,6 +113,13 @@ select {
   height: 600px;
 }
 
+.lock-container {
+  background: no-repeat url('../assets/lock_icon.svg');
+  width: 30px;
+  height: 30px;
+  margin-top: 10px;
+}
+
 .projects-container {
   width: auto;
   height: auto;
