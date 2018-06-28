@@ -38,23 +38,30 @@ function savePalette(e) {
   var colorList = Array.from(getColors).map(color => color.innerText)
   var paletteName = document.querySelector('.palette-name').value
   var projectName = document.querySelector('.select-project').value
-  var newProject = document.querySelector('.display-projects-container')
+  var displayContainer = document.querySelector('.display-projects-container')
   var projectContainer = document.createElement('div')
+  var miniPaletteContainer = document.createElement('div')
+  miniPaletteContainer.className = 'mini-palette-container'
+  projectContainer.className = 'individual-project'
   var createElPalette = document.createElement('p')
   createElPalette.innerText = paletteName
-  var createElProject = document.createElement('p')
+  var createElProject = document.createElement('h2')
   createElProject.innerText = projectName
-  newProject.appendChild(projectContainer)
+  displayContainer.appendChild(projectContainer)
   var createMiniColors = colorList.map(color => {
     var miniColors = document.createElement('div')
     miniColors.style.background = color
     miniColors.className = 'mini-color'
     return miniColors
   })
-  newProject.appendChild(createElPalette)
-  newProject.appendChild(createElProject)
+  var miniColorsContainer = document.createElement('div')
+  miniColorsContainer.className = 'mini-color-container'
+  miniPaletteContainer.appendChild(createElPalette)
+  projectContainer.appendChild(createElProject)
   for (var color of createMiniColors)
-    newProject.appendChild(color)
+    miniColorsContainer.appendChild(color)
+  projectContainer.appendChild(miniPaletteContainer)
+  miniPaletteContainer.appendChild(miniColorsContainer)
 }
 
 paletteSubmit.addEventListener('click', savePalette)
