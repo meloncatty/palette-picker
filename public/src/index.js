@@ -10,7 +10,7 @@ function generateColors() {
     var randomRGB = Math.ceil(Math.random() * 256)
     colorList.push(randomRGB)
   }
-  
+
   return colorList
 }
 
@@ -50,11 +50,15 @@ function createPaletteInfo() {
   var miniPaletteContainer = document.createElement('div')
   miniPaletteContainer.className = 'mini-palette-container'
 
+  var deleteContainer = document.createElement('div')
+  deleteContainer.className = 'delete-card'
+
   var paletteName = document.querySelector('.palette-name').value
   var createElPalette = document.createElement('p')
   createElPalette.innerText = paletteName
 
   miniPaletteContainer.appendChild(createElPalette)
+  miniPaletteContainer.appendChild(deleteContainer)
   
   return miniPaletteContainer
 }
