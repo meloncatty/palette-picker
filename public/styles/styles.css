@@ -117,7 +117,6 @@ select {
   background: no-repeat url('../assets/lock_icon.svg');
   width: 30px;
   height: 30px;
-  margin-top: 10px;
 }
 
 .projects-container {
@@ -138,12 +137,11 @@ select {
   width: 100%;
   height: 142px;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-end;
-}
-
-.palette-color p {
-  margin-right: 10px;
+  padding-top: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 .display-projects-container {
