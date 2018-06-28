@@ -10,6 +10,7 @@ function generateColors() {
     var randomRGB = Math.ceil(Math.random() * 256)
     colorList.push(randomRGB)
   }
+  
   return colorList
 }
 
@@ -28,45 +29,72 @@ function assignColors(e) {
   })
 }
 
-//endpoint to link proj + pal
-
-function savePalette(e) {
-
-  e.preventDefault()
-
-  var getColors = document.querySelectorAll('.palette-color')
-  var colorList = Array.from(getColors).map(color => color.innerText)
-  var paletteName = document.querySelector('.palette-name').value
-  var projectName = document.querySelector('.select-project').value
-  var displayContainer = document.querySelector('.display-projects-container')
+function createProjectInfo() {
   var projectContainer = document.createElement('div')
-  var miniPaletteContainer = document.createElement('div')
-  miniPaletteContainer.className = 'mini-palette-container'
   projectContainer.className = 'individual-project'
-  var createElPalette = document.createElement('p')
-  createElPalette.innerText = paletteName
+
+  var displayContainer = document.querySelector('.display-projects-container')
+  displayContainer.appendChild(projectContainer)
+
+  var projectName = document.querySelector('.select-project').value
+
   var createElProject = document.createElement('h2')
   createElProject.innerText = projectName
-  displayContainer.appendChild(projectContainer)
+  
+  projectContainer.appendChild(createElProject)
+
+  return projectContainer
+}
+
+function createPaletteInfo() {
+  var miniPaletteContainer = document.createElement('div')
+  miniPaletteContainer.className = 'mini-palette-container'
+
+  var paletteName = document.querySelector('.palette-name').value
+  var createElPalette = document.createElement('p')
+  createElPalette.innerText = paletteName
+
+  miniPaletteContainer.appendChild(createElPalette)
+  
+  return miniPaletteContainer
+}
+
+function createMiniColors() {
+  var getColors = document.querySelectorAll('.palette-color')
+  var colorList = Array.from(getColors).map(color => color.innerText)
+  
   var createMiniColors = colorList.map(color => {
     var miniColors = document.createElement('div')
     miniColors.style.background = color
     miniColors.className = 'mini-color'
+
     return miniColors
   })
+
   var miniColorsContainer = document.createElement('div')
   miniColorsContainer.className = 'mini-color-container'
-  miniPaletteContainer.appendChild(createElPalette)
-  projectContainer.appendChild(createElProject)
+  
   for (var color of createMiniColors)
     miniColorsContainer.appendChild(color)
+  
+  return miniColorsContainer
+}
+
+function createNewProject(e) {
+
+  e.preventDefault()
+
+  var projectContainer = createProjectInfo()
+  var miniPaletteContainer = createPaletteInfo()
+  var miniColorsContainer = createMiniColors()
+
   projectContainer.appendChild(miniPaletteContainer)
   miniPaletteContainer.appendChild(miniColorsContainer)
 }
 
-paletteSubmit.addEventListener('click', savePalette)
+paletteSubmit.addEventListener('click', createNewProject)
 
-function createProject(e) {
+function submitNewProject(e) {
   
   e.preventDefault()
 
@@ -81,4 +109,4 @@ function addProjectToSelect(project) {
   document.querySelector('.project-name').value = ''
 }
 
-projectSubmit.addEventListener('click', createProject)
+projectSubmit.addEventListener('click', submitNewProject)
