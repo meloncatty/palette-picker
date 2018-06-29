@@ -198,7 +198,7 @@ function addProjectToSelect(project) {
 
 function getProjects() {
   try {
-    var url = 'http://localhost:3000/api/v1/projects'
+    var url = '/api/v1/projects'
     fetch(url)
       .then(res => res.json())
       .then(projects => {
@@ -224,7 +224,7 @@ function getProjects() {
 
 function getPalettes() {
   try {
-    var url = 'http://localhost:3000/api/v1/palettes'
+    var url = '/api/v1/palettes'
     fetch(url)
       .then(res => res.json())
       .then(palettes => {
@@ -284,7 +284,7 @@ function getProjectId() {
     savePaletteNotice.appendChild(savePaletteNoticeEl)
   }
   try {
-    var url = 'http://localhost:3000/api/v1/projects'
+    var url = '/api/v1/projects'
     fetch(url)
       .then(res => res.json())
       .then(projects => {
@@ -297,7 +297,7 @@ function getProjectId() {
 }
 
 function postNewProject(projectName) {
-  var url = 'http://localhost:3000/api/v1/projects'
+  var url = '/api/v1/projects'
   try {
     fetch(url, {
       method: 'POST',
@@ -331,7 +331,7 @@ function postNewPalette(projectId) {
     var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
     var getColors = colorContainers.map(color => color.innerText)
     try {
-      var url= `http://localhost:3000/api/v1/projects/` + projectId + `/palettes`
+      var url= `/api/v1/projects/` + projectId + `/palettes`
       var options = {
             method: 'POST',
             body: JSON.stringify({
