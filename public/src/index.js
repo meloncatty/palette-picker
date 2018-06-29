@@ -17,9 +17,8 @@ projectSubmit.addEventListener('click', (e) => {
   setTimeout(fadeOutProjectNotice, 5000)
 })
 
-createPalettes()
-
 function init() {
+  createPalettes()
   getProjects()
   getPalettes()
 }
@@ -167,7 +166,7 @@ function createMiniColors() {
 
 function displayNewProject(e) {
 
-  e.preventDefault()
+  e.preventDefault() 
 
   var projectContainer = createProjectInfo()
   var miniPaletteContainer = createPaletteInfo()
