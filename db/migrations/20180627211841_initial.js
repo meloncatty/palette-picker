@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary();
       table.integer('project_id').unsigned()
       table.foreign('project_id')
-        .references('palettes.id');
+        .references('projects.id');
 
       table.timestamps(true, true);
     })
