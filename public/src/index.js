@@ -31,8 +31,10 @@ function toggleProjectSubmit() {
 
 function fadeOutPaletteNotice() {
   var noticeEl = document.querySelector('.fade-out')
-  noticeEl.style.opacity = 0
-  setTimeout(removePaletteNotice, 3000)
+  if (noticeEl) {
+    noticeEl.style.opacity = 0
+    setTimeout(removePaletteNotice, 3000)
+  }
 }
 
 function removePaletteNotice() {
@@ -43,8 +45,10 @@ function removePaletteNotice() {
 
 function fadeOutProjectNotice() {
   var noticeEl = document.querySelector('.fade-out')
-  noticeEl.style.opacity = 0
-  setTimeout(removeProjectNotice, 3000)
+  if(noticeEl) {
+    noticeEl.style.opacity = 0
+    setTimeout(removeProjectNotice, 3000)
+  }
 }
 
 function removeProjectNotice() {
@@ -231,32 +235,37 @@ function postNewProject(projectName) {
 
 //need to add name to palette
 function postNewPalette(projectId) {
-  var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
-  var getColors = colorContainers.map(color => color.innerText)
-  try {
-    var url= `http://localhost:3000/api/v1/projects/` + projectId + `/palettes`
-    var options = {
-          method: 'POST',
-          body: JSON.stringify({
-            palette: {
-              project_id: projectId.toString,
-              color1: getColors[0].trim(),
-              color2: getColors[1].trim(),
-              color3: getColors[2].trim(),
-              color4: getColors[3].trim(),
-              color5: getColors[4].trim()
+  var paletteName = document.querySelector('.palette-name').value
+  var selectedProject = document.querySelector('.select-project')
+  if (paletteName) {
+    var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
+    var getColors = colorContainers.map(color => color.innerText)
+    try {
+      var url= `http://localhost:3000/api/v1/projects/` + projectId + `/palettes`
+      var options = {
+            method: 'POST',
+            body: JSON.stringify({
+              palette: {
+                project_id: projectId.toString,
+                color1: getColors[0].trim(),
+                color2: getColors[1].trim(),
+                color3: getColors[2].trim(),
+                color4: getColors[3].trim(),
+                color5: getColors[4].trim(),
+                name: paletteName
+              }
+            }),
+            headers: {
+              'Content-Type': 'application/json'
             }
-          }),
-          headers: {
-            'Content-Type': 'application/json'
           }
-        }
-    console.log(options.body)
-    fetch(url, options)
-      .then(res => console.log(res))
-  } catch (err) {
-    console.log(err)
+      fetch(url, options)
+        .then(res => console.log(res))
+    } catch (err) {
+      console.log(err)
+    }
   }
+  selectedProject.selectedIndex = 0
 }
 
 function addProjectToSelect(project) {
