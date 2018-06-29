@@ -166,7 +166,7 @@ function createMiniColors() {
 
 function displayNewProject(e) {
 
-  e.preventDefault() 
+  e.preventDefault()
 
   var projectContainer = createProjectInfo()
   var miniPaletteContainer = createPaletteInfo()
@@ -276,7 +276,6 @@ function getPalettes() {
 }
 
 function getProjectId() {
-  console.log('hi')
   var projectName = document.querySelector('.select-project').value
   if (!projectName) {
     var savePaletteNotice = document.querySelector('.save-palette-notice')
