@@ -20,39 +20,31 @@
               <button class='generate-palette-submit' type='submit'>GENERATE</button>
         </div>
         <div class='save-palette-form-container'>
+          <div class='save-palette-notice'></div>
             <form class='save-palette'>
                 <input class='palette-name new-palette' type='text' />
                 <select class='select-project new-palette' name='Projects'>
                     <option value="" disabled selected>Select your project</option>
                 </select>
-                <button class='submit-new-palette new-palette' type='submit'>SAVE</button>
+                <button disabled class='submit-new-palette new-palette' type='submit'>SAVE</button>
               </form>
         </div>
       </section>
       <section class='palette-container'>
-        <div class='palette-color'>
-          <p>#FFF</p>
-        </div>
-        <div class='palette-color'>
-          <p>#FFF</p>
-        </div>
-        <div class='palette-color'>
-          <p>#FFF</p>
-        </div>
-        <div class='palette-color'>
-          <p>#FFF</p>
-        </div>
-        <div class='palette-color'>
-          <p>#FFF</p>
-        </div>
+        <div class='palette-color'></div>
+        <div class='palette-color'></div>
+        <div class='palette-color'></div>
+        <div class='palette-color'></div>
+        <div class='palette-color'></div>
       </section>
     </div>
     <section class='projects-container'>
       <div class='project-form-container'>
         <h3>Create a project</h3>
+        <div class='creation-success'></div>
         <form class='create-project-form'>
           <input class='project-name' type='text' />
-          <button class='add-project' type='submit'>CREATE</button>
+          <button disabled class='add-project' type='submit'>CREATE</button>
       </div>
       <section class='display-projects-container'>
 
