@@ -17,7 +17,17 @@ app.get('/api/v1/projects', (req, res) => {
       res.status(200).json(projects)
     })
     .catch((err) => {
-      response.status(500).json({ err })
+      res.status(500).json({ err })
+    })
+})
+
+app.get('/api/v1/palettes', (req, res) => {
+  database('palettes').select()
+    .then(palettes => {
+      res.status(200).json(palettes)
+    })
+    .catch((err) => {
+      res.status(500).json({ err })
     })
 })
 
@@ -38,7 +48,7 @@ app.post('/api/v1/projects/:id/palettes', (req, res) => {
 
   database('palettes').insert(palette, 'id')
     .then(paletteId => {
-      res.status(201).json({palettedId: paletteId[0]})
+      res.status(201).json({paletteId: paletteId[0]})
     })
     .catch(err => {
       res.status(500).json({ err })
