@@ -20,7 +20,7 @@ createPalettes()
 function createPalettes(e) {
 
   if (e) e.preventDefault()
-  
+
   var colorContainers = document.querySelectorAll('.palette-color')
   colorContainers.forEach((container, index) => {
     var bgColor = generateColors()
@@ -58,7 +58,7 @@ function createProjectInfo() {
 
   var createElProject = document.createElement('h2')
   createElProject.innerText = projectName
-  
+
   projectContainer.appendChild(createElProject)
 
   return projectContainer
@@ -77,14 +77,14 @@ function createPaletteInfo() {
 
   miniPaletteContainer.appendChild(createElPalette)
   miniPaletteContainer.appendChild(deleteContainer)
-  
+
   return miniPaletteContainer
 }
 
 function createMiniColors() {
   var getColors = document.querySelectorAll('.palette-color')
   var colorList = Array.from(getColors).map(color => color.innerText)
-  
+
   var createMiniColors = colorList.map(color => {
     var miniColors = document.createElement('div')
     miniColors.style.background = color
@@ -95,14 +95,14 @@ function createMiniColors() {
 
   var miniColorsContainer = document.createElement('div')
   miniColorsContainer.className = 'mini-color-container'
-  
+
   for (var color of createMiniColors)
     miniColorsContainer.appendChild(color)
-  
+
   return miniColorsContainer
 }
 
-function createNewProject(e) {
+function displayNewProject(e) {
 
   e.preventDefault()
 
@@ -112,17 +112,89 @@ function createNewProject(e) {
 
   projectContainer.appendChild(miniPaletteContainer)
   miniPaletteContainer.appendChild(miniColorsContainer)
+
+  getProjectId()
 }
 
-paletteSubmit.addEventListener('click', createNewProject)
+paletteSubmit.addEventListener('click', displayNewProject)
 
 function submitNewProject(e) {
-  
+
   e.preventDefault()
+
 
   var projectName = document.querySelector('.project-name').value
   addProjectToSelect(projectName)
+
+
+  postNewProject(projectName)
+
   projectName = ''
+}
+
+function getProjectId() {
+  var projectName = document.querySelector('.select-project').value
+  try {
+    var url = 'http://localhost:3000/api/v1/projects'
+    fetch(url)
+      .then(res => res.json())
+      .then(projects => {
+        var findProject = projects.filter(project => project.name === projectName)
+        postNewPalette(findProject[0].id)
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function postNewProject(projectName) {
+  var url = 'http://localhost:3000/api/v1/projects'
+  try {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        project: {
+          name: projectName
+        }
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => console.log(res))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+//need to add name to palette
+function postNewPalette(projectId) {
+  var selectedProject = document.querySelector('.select-project').value
+  var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
+  var getColors = colorContainers.map(color => color.innerText)
+  try {
+    var url= `http://localhost:3000/api/v1/projects/` + projectId + `/palettes`
+    var options = {
+          method: 'POST',
+          body: JSON.stringify({
+            palette: {
+              project_id: projectId.toString,
+              color1: getColors[0].trim(),
+              color2: getColors[1].trim(),
+              color3: getColors[2].trim(),
+              color4: getColors[3].trim(),
+              color5: getColors[4].trim()
+            }
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+    console.log(options.body)
+    fetch(url, options)
+      .then(res => console.log(res))
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function addProjectToSelect(project) {
