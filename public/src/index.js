@@ -1,6 +1,9 @@
 var generatePalette = document.querySelector('.generate-palette-submit')
 var projectSubmit = document.querySelector('.add-project')
 var paletteSubmit = document.querySelector('.submit-new-palette')
+var projectInput = document.querySelector('.project-name')
+var paletteInput = document.querySelector('.palette-name')
+var selectedProject = document.querySelector('.select-project')
 
 function generateColors() {
   var colorList = []
@@ -13,10 +16,53 @@ function generateColors() {
   return colorList
 }
 
+projectInput.addEventListener('keyup', toggleProjectSubmit)
+
 generatePalette.addEventListener('click', createPalettes)
 createPalettes()
 
-//need case for no dupe colors
+function toggleProjectSubmit() {
+  if (projectInput.value !== '') {
+    projectSubmit.removeAttribute('disabled')
+  } else if (projectInput.value === '') {
+    projectSubmit.setAttribute('disabled', 'disabled')
+  }
+}
+
+function fadeOutPaletteNotice() {
+  var noticeEl = document.querySelector('.fade-out')
+  noticeEl.style.opacity = 0
+  setTimeout(removePaletteNotice, 3000)
+}
+
+function removePaletteNotice() {
+  var noticeContainer = document.querySelector('.save-palette-notice')
+  var noticeEl = document.querySelector('.fade-out')
+  noticeContainer.removeChild(noticeEl)
+}
+
+function fadeOutProjectNotice() {
+  var noticeEl = document.querySelector('.fade-out')
+  noticeEl.style.opacity = 0
+  setTimeout(removeProjectNotice, 3000)
+}
+
+function removeProjectNotice() {
+  var noticeContainer = document.querySelector('.creation-success')
+  var noticeEl = document.querySelector('.fade-out')
+  noticeContainer.removeChild(noticeEl)
+}
+
+function togglePaletteSubmit() {
+  if (paletteInput.value !== '') {
+    paletteSubmit.removeAttribute('disabled')
+  } else if (paletteSubmit.value === '') {
+    paletteSubmit.setAttribute('disabled', 'disabled')
+  }
+}
+
+paletteInput.addEventListener('keyup', togglePaletteSubmit)
+
 function createPalettes(e) {
 
   if (e) e.preventDefault()
@@ -116,12 +162,14 @@ function displayNewProject(e) {
   getProjectId()
 }
 
-paletteSubmit.addEventListener('click', displayNewProject)
+paletteSubmit.addEventListener('click', (e) => {
+  displayNewProject(e)
+  setTimeout(fadeOutPaletteNotice, 3000)
+})
 
 function submitNewProject(e) {
 
   e.preventDefault()
-
 
   var projectName = document.querySelector('.project-name').value
   addProjectToSelect(projectName)
@@ -134,6 +182,13 @@ function submitNewProject(e) {
 
 function getProjectId() {
   var projectName = document.querySelector('.select-project').value
+  if (!projectName) {
+    var savePaletteNotice = document.querySelector('.save-palette-notice')
+    var savePaletteNoticeEl = document.createElement('p')
+    savePaletteNoticeEl.className = 'fade-out'
+    savePaletteNoticeEl.innerText = 'You must select a project.'
+    savePaletteNotice.appendChild(savePaletteNoticeEl)
+  }
   try {
     var url = 'http://localhost:3000/api/v1/projects'
     fetch(url)
@@ -160,7 +215,15 @@ function postNewProject(projectName) {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(res => console.log(res))
+    }).then(res => {
+      if (res.ok) {
+        var creationSuccessContainer = document.querySelector('.creation-success')
+        var creationSuccessTextEl = document.createElement('p')
+        creationSuccessTextEl.className = 'fade-out'
+        creationSuccessTextEl.innerText = 'Project successfully created!'
+        creationSuccessContainer.appendChild(creationSuccessTextEl)
+      }
+    })
   } catch (err) {
     console.log(err)
   }
@@ -168,7 +231,6 @@ function postNewProject(projectName) {
 
 //need to add name to palette
 function postNewPalette(projectId) {
-  var selectedProject = document.querySelector('.select-project').value
   var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
   var getColors = colorContainers.map(color => color.innerText)
   try {
@@ -203,4 +265,7 @@ function addProjectToSelect(project) {
   document.querySelector('.project-name').value = ''
 }
 
-projectSubmit.addEventListener('click', submitNewProject)
+projectSubmit.addEventListener('click', (e) => {
+  submitNewProject(e)
+  setTimeout(fadeOutProjectNotice, 3000)
+})
