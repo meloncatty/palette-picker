@@ -5,6 +5,27 @@ var projectInput = document.querySelector('.project-name')
 var paletteInput = document.querySelector('.palette-name')
 var selectedProject = document.querySelector('.select-project')
 
+projectInput.addEventListener('keyup', toggleProjectSubmit)
+paletteInput.addEventListener('keyup', togglePaletteSubmit)
+generatePalette.addEventListener('click', createPalettes)
+paletteSubmit.addEventListener('click', (e) => {
+  displayNewProject(e)
+  setTimeout(fadeOutPaletteNotice, 5000)
+})
+projectSubmit.addEventListener('click', (e) => {
+  submitNewProject(e)
+  setTimeout(fadeOutProjectNotice, 5000)
+})
+
+createPalettes()
+
+function init() {
+  getProjects()
+  getPalettes()
+}
+
+document.onload(init())
+
 function generateColors() {
   var colorList = []
 
@@ -15,11 +36,6 @@ function generateColors() {
 
   return colorList
 }
-
-projectInput.addEventListener('keyup', toggleProjectSubmit)
-
-generatePalette.addEventListener('click', createPalettes)
-createPalettes()
 
 function toggleProjectSubmit() {
   if (projectInput.value !== '') {
@@ -33,7 +49,7 @@ function fadeOutPaletteNotice() {
   var noticeEl = document.querySelector('.fade-out')
   if (noticeEl) {
     noticeEl.style.opacity = 0
-    setTimeout(removePaletteNotice, 3000)
+    setTimeout(removePaletteNotice, 5000)
   }
 }
 
@@ -47,7 +63,7 @@ function fadeOutProjectNotice() {
   var noticeEl = document.querySelector('.fade-out')
   if(noticeEl) {
     noticeEl.style.opacity = 0
-    setTimeout(removeProjectNotice, 3000)
+    setTimeout(removeProjectNotice, 5000)
   }
 }
 
@@ -65,10 +81,7 @@ function togglePaletteSubmit() {
   }
 }
 
-paletteInput.addEventListener('keyup', togglePaletteSubmit)
-
 function createPalettes(e) {
-
   if (e) e.preventDefault()
 
   var colorContainers = document.querySelectorAll('.palette-color')
@@ -166,11 +179,6 @@ function displayNewProject(e) {
   getProjectId()
 }
 
-paletteSubmit.addEventListener('click', (e) => {
-  displayNewProject(e)
-  setTimeout(fadeOutPaletteNotice, 3000)
-})
-
 function submitNewProject(e) {
 
   e.preventDefault()
@@ -184,7 +192,92 @@ function submitNewProject(e) {
   projectName = ''
 }
 
+function addProjectToSelect(project) {
+  var selectEl = document.querySelector('.select-project')
+  selectEl.options.add(new Option(project))
+  document.querySelector('.project-name').value = ''
+}
+
+function getProjects() {
+  try {
+    var url = 'http://localhost:3000/api/v1/projects'
+    fetch(url)
+      .then(res => res.json())
+      .then(projects => {
+        projects.map(project => {
+          var projectContainer = document.createElement('div')
+          projectContainer.className = 'individual-project ' + 'project-' + project.id
+
+          var displayContainer = document.querySelector('.display-projects-container')
+          displayContainer.appendChild(projectContainer)
+
+          var createElProject = document.createElement('h2')
+          createElProject.innerText = project.name
+
+          projectContainer.appendChild(createElProject)
+
+          return projectContainer
+        })
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function getPalettes() {
+  try {
+    var url = 'http://localhost:3000/api/v1/palettes'
+    fetch(url)
+      .then(res => res.json())
+      .then(palettes => {
+        palettes.map(palette => {
+          var miniPaletteContainer = document.createElement('div')
+          miniPaletteContainer.className = 'mini-palette-container'
+
+          var deleteContainer = document.createElement('div')
+          deleteContainer.className = 'delete-card'
+
+          var createElPalette = document.createElement('p')
+          createElPalette.innerText = palette.name
+
+          miniPaletteContainer.appendChild(createElPalette)
+          miniPaletteContainer.appendChild(deleteContainer)
+
+          var projectContainers = document.querySelectorAll('.individual-project')
+          var projectsList = Array.from(projectContainers)
+          var projectsClassList = projectsList.map(project => Array.from(project.classList)[1].split('-')[1])
+          projectsClassList.map(projectId => {
+            if(parseInt(projectId) === parseInt(palette.project_id)) {
+              projectContainer = document.querySelector('.project-' + projectId)
+              projectContainer.appendChild(miniPaletteContainer)
+              var createMiniColors = [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5].map(color => {
+                var miniColors = document.createElement('div')
+                miniColors.style.background = color
+                miniColors.className = 'mini-color'
+
+                return miniColors
+              })
+              var miniColorsContainer = document.createElement('div')
+              miniColorsContainer.className = 'mini-color-container'
+
+              for (var color of createMiniColors)
+                miniColorsContainer.appendChild(color)
+
+              miniPaletteContainer.appendChild(miniColorsContainer)
+              projectContainer.appendChild(miniPaletteContainer)
+            }
+          })
+
+          // projectContainer.appendChild(miniPaletteContainer)
+        })
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 function getProjectId() {
+  console.log('hi')
   var projectName = document.querySelector('.select-project').value
   if (!projectName) {
     var savePaletteNotice = document.querySelector('.save-palette-notice')
@@ -199,6 +292,7 @@ function getProjectId() {
       .then(res => res.json())
       .then(projects => {
         var findProject = projects.filter(project => project.name === projectName)
+        console.log(findProject)
         postNewPalette(findProject[0].id)
       })
   } catch (err) {
@@ -233,8 +327,8 @@ function postNewProject(projectName) {
   }
 }
 
-//need to add name to palette
 function postNewPalette(projectId) {
+  var stringifyProjectId = projectId.toString()
   var paletteName = document.querySelector('.palette-name').value
   var selectedProject = document.querySelector('.select-project')
   if (paletteName) {
@@ -246,7 +340,7 @@ function postNewPalette(projectId) {
             method: 'POST',
             body: JSON.stringify({
               palette: {
-                project_id: projectId.toString,
+                project_id: stringifyProjectId,
                 color1: getColors[0].trim(),
                 color2: getColors[1].trim(),
                 color3: getColors[2].trim(),
@@ -267,14 +361,3 @@ function postNewPalette(projectId) {
   }
   selectedProject.selectedIndex = 0
 }
-
-function addProjectToSelect(project) {
-  var selectEl = document.querySelector('.select-project')
-  selectEl.options.add(new Option(project))
-  document.querySelector('.project-name').value = ''
-}
-
-projectSubmit.addEventListener('click', (e) => {
-  submitNewProject(e)
-  setTimeout(fadeOutProjectNotice, 3000)
-})
