@@ -133,9 +133,8 @@ function createPaletteInfo() {
   var deleteContainer = document.createElement('div')
   deleteContainer.className = 'delete-card'
 
-  var paletteName = document.querySelector('.palette-name').value
   var createElPalette = document.createElement('p')
-  createElPalette.innerText = paletteName
+  createElPalette.innerText = paletteInput.value
 
   miniPaletteContainer.appendChild(createElPalette)
   miniPaletteContainer.appendChild(deleteContainer)
@@ -290,7 +289,6 @@ function getProjectId() {
       .then(res => res.json())
       .then(projects => {
         var findProject = projects.filter(project => project.name === projectName)
-        console.log(findProject)
         postNewPalette(findProject[0].id)
       })
   } catch (err) {
@@ -352,7 +350,6 @@ function postNewPalette(projectId) {
             }
           }
       fetch(url, options)
-        .then(res => console.log(res))
     } catch (err) {
       console.log(err)
     }
