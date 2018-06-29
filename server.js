@@ -58,3 +58,5 @@ app.post('/api/v1/projects/:id/palettes', (req, res) => {
 app.listen(app.get('port'), () => {
   console.log(`Palette Picker is running on port ${app.get('port')}.`)
 })
+
+module.exports = app
