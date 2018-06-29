@@ -144,7 +144,7 @@ select {
 }
 
 .lock-container {
-  background: no-repeat url('../assets/lock_icon.svg');
+  background: no-repeat url('../assets/lock_open_icon.svg');
   width: 30px;
   height: 30px;
 }
