@@ -1,6 +1,29 @@
 var generatePalette = document.querySelector('.generate-palette-submit')
 var projectSubmit = document.querySelector('.add-project')
 var paletteSubmit = document.querySelector('.submit-new-palette')
+var projectInput = document.querySelector('.project-name')
+var paletteInput = document.querySelector('.palette-name')
+var selectedProject = document.querySelector('.select-project')
+
+projectInput.addEventListener('keyup', toggleProjectSubmit)
+paletteInput.addEventListener('keyup', togglePaletteSubmit)
+generatePalette.addEventListener('click', createPalettes)
+paletteSubmit.addEventListener('click', (e) => {
+  displayNewProject(e)
+  setTimeout(fadeOutPaletteNotice, 5000)
+})
+projectSubmit.addEventListener('click', (e) => {
+  submitNewProject(e)
+  setTimeout(fadeOutProjectNotice, 5000)
+})
+
+function init() {
+  createPalettes()
+  getProjects()
+  getPalettes()
+}
+
+document.onload(init())
 
 function generateColors() {
   var colorList = []
@@ -13,14 +36,53 @@ function generateColors() {
   return colorList
 }
 
-generatePalette.addEventListener('click', createPalettes)
-createPalettes()
+function toggleProjectSubmit() {
+  if (projectInput.value !== '') {
+    projectSubmit.removeAttribute('disabled')
+  } else if (projectInput.value === '') {
+    projectSubmit.setAttribute('disabled', 'disabled')
+  }
+}
 
-//need case for no dupe colors
+function fadeOutPaletteNotice() {
+  var noticeEl = document.querySelector('.fade-out')
+  if (noticeEl) {
+    noticeEl.style.opacity = 0
+    setTimeout(removePaletteNotice, 5000)
+  }
+}
+
+function removePaletteNotice() {
+  var noticeContainer = document.querySelector('.save-palette-notice')
+  var noticeEl = document.querySelector('.fade-out')
+  noticeContainer.removeChild(noticeEl)
+}
+
+function fadeOutProjectNotice() {
+  var noticeEl = document.querySelector('.fade-out')
+  if(noticeEl) {
+    noticeEl.style.opacity = 0
+    setTimeout(removeProjectNotice, 5000)
+  }
+}
+
+function removeProjectNotice() {
+  var noticeContainer = document.querySelector('.creation-success')
+  var noticeEl = document.querySelector('.fade-out')
+  noticeContainer.removeChild(noticeEl)
+}
+
+function togglePaletteSubmit() {
+  if (paletteInput.value !== '') {
+    paletteSubmit.removeAttribute('disabled')
+  } else if (paletteSubmit.value === '') {
+    paletteSubmit.setAttribute('disabled', 'disabled')
+  }
+}
+
 function createPalettes(e) {
-
   if (e) e.preventDefault()
-  
+
   var colorContainers = document.querySelectorAll('.palette-color')
   colorContainers.forEach((container, index) => {
     var bgColor = generateColors()
@@ -58,7 +120,7 @@ function createProjectInfo() {
 
   var createElProject = document.createElement('h2')
   createElProject.innerText = projectName
-  
+
   projectContainer.appendChild(createElProject)
 
   return projectContainer
@@ -77,14 +139,14 @@ function createPaletteInfo() {
 
   miniPaletteContainer.appendChild(createElPalette)
   miniPaletteContainer.appendChild(deleteContainer)
-  
+
   return miniPaletteContainer
 }
 
 function createMiniColors() {
   var getColors = document.querySelectorAll('.palette-color')
   var colorList = Array.from(getColors).map(color => color.innerText)
-  
+
   var createMiniColors = colorList.map(color => {
     var miniColors = document.createElement('div')
     miniColors.style.background = color
@@ -95,14 +157,14 @@ function createMiniColors() {
 
   var miniColorsContainer = document.createElement('div')
   miniColorsContainer.className = 'mini-color-container'
-  
+
   for (var color of createMiniColors)
     miniColorsContainer.appendChild(color)
-  
+
   return miniColorsContainer
 }
 
-function createNewProject(e) {
+function displayNewProject(e) {
 
   e.preventDefault()
 
@@ -112,16 +174,20 @@ function createNewProject(e) {
 
   projectContainer.appendChild(miniPaletteContainer)
   miniPaletteContainer.appendChild(miniColorsContainer)
+
+  getProjectId()
 }
 
-paletteSubmit.addEventListener('click', createNewProject)
-
 function submitNewProject(e) {
-  
+
   e.preventDefault()
 
   var projectName = document.querySelector('.project-name').value
   addProjectToSelect(projectName)
+
+
+  postNewProject(projectName)
+
   projectName = ''
 }
 
@@ -131,4 +197,165 @@ function addProjectToSelect(project) {
   document.querySelector('.project-name').value = ''
 }
 
-projectSubmit.addEventListener('click', submitNewProject)
+function getProjects() {
+  try {
+    var url = 'http://localhost:3000/api/v1/projects'
+    fetch(url)
+      .then(res => res.json())
+      .then(projects => {
+        projects.map(project => {
+          var projectContainer = document.createElement('div')
+          projectContainer.className = 'individual-project ' + 'project-' + project.id
+
+          var displayContainer = document.querySelector('.display-projects-container')
+          displayContainer.appendChild(projectContainer)
+
+          var createElProject = document.createElement('h2')
+          createElProject.innerText = project.name
+
+          projectContainer.appendChild(createElProject)
+
+          return projectContainer
+        })
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function getPalettes() {
+  try {
+    var url = 'http://localhost:3000/api/v1/palettes'
+    fetch(url)
+      .then(res => res.json())
+      .then(palettes => {
+        palettes.map(palette => {
+          var miniPaletteContainer = document.createElement('div')
+          miniPaletteContainer.className = 'mini-palette-container'
+
+          var deleteContainer = document.createElement('div')
+          deleteContainer.className = 'delete-card'
+
+          var createElPalette = document.createElement('p')
+          createElPalette.innerText = palette.name
+
+          miniPaletteContainer.appendChild(createElPalette)
+          miniPaletteContainer.appendChild(deleteContainer)
+
+          var projectContainers = document.querySelectorAll('.individual-project')
+          var projectsList = Array.from(projectContainers)
+          var projectsClassList = projectsList.map(project => Array.from(project.classList)[1].split('-')[1])
+          projectsClassList.map(projectId => {
+            if(parseInt(projectId) === parseInt(palette.project_id)) {
+              projectContainer = document.querySelector('.project-' + projectId)
+              projectContainer.appendChild(miniPaletteContainer)
+              var createMiniColors = [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5].map(color => {
+                var miniColors = document.createElement('div')
+                miniColors.style.background = color
+                miniColors.className = 'mini-color'
+
+                return miniColors
+              })
+              var miniColorsContainer = document.createElement('div')
+              miniColorsContainer.className = 'mini-color-container'
+
+              for (var color of createMiniColors)
+                miniColorsContainer.appendChild(color)
+
+              miniPaletteContainer.appendChild(miniColorsContainer)
+              projectContainer.appendChild(miniPaletteContainer)
+            }
+          })
+
+          // projectContainer.appendChild(miniPaletteContainer)
+        })
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function getProjectId() {
+  var projectName = document.querySelector('.select-project').value
+  if (!projectName) {
+    var savePaletteNotice = document.querySelector('.save-palette-notice')
+    var savePaletteNoticeEl = document.createElement('p')
+    savePaletteNoticeEl.className = 'fade-out'
+    savePaletteNoticeEl.innerText = 'You must select a project.'
+    savePaletteNotice.appendChild(savePaletteNoticeEl)
+  }
+  try {
+    var url = 'http://localhost:3000/api/v1/projects'
+    fetch(url)
+      .then(res => res.json())
+      .then(projects => {
+        var findProject = projects.filter(project => project.name === projectName)
+        console.log(findProject)
+        postNewPalette(findProject[0].id)
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function postNewProject(projectName) {
+  var url = 'http://localhost:3000/api/v1/projects'
+  try {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        project: {
+          name: projectName
+        }
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (res.ok) {
+        var creationSuccessContainer = document.querySelector('.creation-success')
+        var creationSuccessTextEl = document.createElement('p')
+        creationSuccessTextEl.className = 'fade-out'
+        creationSuccessTextEl.innerText = 'Project successfully created!'
+        creationSuccessContainer.appendChild(creationSuccessTextEl)
+      }
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function postNewPalette(projectId) {
+  var stringifyProjectId = projectId.toString()
+  var paletteName = document.querySelector('.palette-name').value
+  var selectedProject = document.querySelector('.select-project')
+  if (paletteName) {
+    var colorContainers = Array.from(document.querySelectorAll('.palette-color'))
+    var getColors = colorContainers.map(color => color.innerText)
+    try {
+      var url= `http://localhost:3000/api/v1/projects/` + projectId + `/palettes`
+      var options = {
+            method: 'POST',
+            body: JSON.stringify({
+              palette: {
+                project_id: stringifyProjectId,
+                color1: getColors[0].trim(),
+                color2: getColors[1].trim(),
+                color3: getColors[2].trim(),
+                color4: getColors[3].trim(),
+                color5: getColors[4].trim(),
+                name: paletteName
+              }
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+      fetch(url, options)
+        .then(res => console.log(res))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  selectedProject.selectedIndex = 0
+}

@@ -28,6 +28,11 @@ button {
   font-size: .8em;
 }
 
+button:disabled {
+  background: #d1d1d1;
+  color: #9b9b9b;
+}
+
 button:focus {
   outline: none;
 }
@@ -51,6 +56,31 @@ select {
   height: 39px;
   width: 181px;
   font-family: 'Tajawal', sans-serif;
+}
+
+.palette-name {
+  width: 169px;
+}
+
+.save-palette-notice {
+  width: 177px;
+  height: 39px;
+  color: #F44E3F;
+  font-size: 1em;
+}
+
+.fade-out {
+  opacity: 1;
+  transition: 1s opacity;
+}
+
+.creation-success {
+  width: 200px;
+  height: 40px;
+  display: flex;
+  align-items: flex-start;
+  color: #86BA90;
+  font-size: 1em;
 }
 
 .generate-container {
@@ -102,7 +132,7 @@ select {
   align-items: center;
 }
 
-.submit-new-palette{ 
+.submit-new-palette{
   margin-bottom: 30px;
 }
 
@@ -114,7 +144,7 @@ select {
 }
 
 .lock-container {
-  background: no-repeat url('../assets/lock_icon.svg');
+  background: no-repeat url('../assets/lock_open_icon.svg');
   width: 30px;
   height: 30px;
 }
