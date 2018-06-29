@@ -1,10 +1,10 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
+var express = require('express')
+var app = express()
+var bodyParser = require('body-parser')
 
-const environment = process.env.NODE_ENV || 'development';
-const configuration = require('./knexfile')[environment];
-const database = require('knex')(configuration);
+var environment = process.env.NODE_ENV || 'development'
+var configuration = require('./knexfile')[environment]
+var database = require('knex')(configuration)
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -22,13 +22,25 @@ app.get('/api/v1/projects', (req, res) => {
 })
 
 app.post('/api/v1/projects', (req, res) => {
-  const { project } = req.body
+  var { project } = req.body
 
   database('projects').insert(project, 'id')
     .then(projectId => {
       res.status(201).json({projectId: projectId[0]})
     })
     .catch(err =>{
+      res.status(500).json({ err })
+    })
+})
+
+app.post('/api/v1/projects/:id/palettes', (req, res) => {
+  var { palette } = req.body
+
+  database('palettes').insert(palette, 'id')
+    .then(paletteId => {
+      res.status(201).json({palettedId: paletteId[0]})
+    })
+    .catch(err => {
       res.status(500).json({ err })
     })
 })
