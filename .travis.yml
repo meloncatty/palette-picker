@@ -1,8 +1,14 @@
 language: node_js
 node_js: '8'
 services:
-  - postgresql
+- postgresql
 before_script:
-  - psql -c 'CREATE DATABASE test_project;' -U postgres
+- psql -c 'CREATE DATABASE test_project;' -U postgres
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: PjhHTIhcaarm5Jkg/0dao/zm5CtCVHjnhegeKFL2f7cVgojdHFZ3Ua9EXB2C/pSxbhehjv78dx47nFEJ3eGT1w/iYbMGBZpwydoNWO+RpQhd+2qzrIJnL1PELMxscL7hu1vLLfBWfCGDh7r05vZEdaPpvN1BrOfjqsuZvQS2FEGWxO80NwoLLMUq+ESnGpoRMjEf8EylY22f9hXIbdvXgotRVVE1KWKZDX8m/nXoStnAT9Dpz0fLxB6oB5rdKphThTc5wDrbjwuV1rHGo8LHUgQSLpLxwvV1pES7lfjw5U4QGNT/jxpO23slzWIzwSD2jzKTJCzEYH1r8gDe+9UnMrTGrJ3rEKZznmAehL7+xqG4Qa+kad9J74nNYT9FebexKf21EQKXF92Ml+a53dErSTsc1/rREfhZ2wxAUKolZuqkXCrTI3+yZRsDy3qVVu566QHRGb+8xnqf2dHDJKXf/ibWdgm+69Omn/PeAR4QMbin4/5bxNjh+MQ9iCK0kxJH8xjPe+KmisBrxOBHoiq91IK9i4nYxktN6JoExqi+m0fwAuBh8tiplq+Z2589g9r+YMAbNCDbWyVf1ecbrdVsHgwZsgBYYrj49wAeMX8ikNH0r2pMrxFUBbI7mQiWPHIAqxfleAmhY8ZeiY5igGDG28f8Nl+yBIFnkPhBflcXB6A=
+  app: kh-palette-picker
+  skip_cleanup: true
