@@ -55,6 +55,18 @@ app.post('/api/v1/projects/:id/palettes', (req, res) => {
     })
 })
 
+app.delete('/api/v1/palettes/:id', (req, res) => {
+  var {id} = req.params
+
+//   database('palettes').where('id', id).delete()
+//     .then(paletteId => {
+//       res.status(200).json({paletteId: paletteId[0]})
+//     })
+//     .catch(err => {
+//       res.status(500).json({ err })
+//     })
+// })
+
 app.listen(app.get('port'), () => {
   console.log(`Palette Picker is running on port ${app.get('port')}.`)
 })
